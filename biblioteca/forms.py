@@ -32,8 +32,8 @@ class LivroForm(forms.ModelForm):
 		self.helper.add_input(Submit('submit', 'Salvar'))
 
 class EmprestimoForm(forms.ModelForm):
-	livro = forms.ChoiceField(choices=[(livro.pk, livro.titulo) for livro in Livro.objects.all()])
-	aluno = forms.ChoiceField(choices=[(aluno.pk, aluno.nome) for aluno in Aluno.objects.all()])
+	livro = forms.ChoiceField(choices=[(livro.codigo, livro.titulo) for livro in Livro.objects.all()])
+	aluno = forms.ChoiceField(choices=[(aluno.matricula, aluno.nome) for aluno in Aluno.objects.all()])
 	dataEmprestimo = forms.CharField(widget=forms.widgets.DateTimeInput(attrs={"type": "date"}))
 	dataDevolucao = forms.CharField(widget=forms.widgets.DateTimeInput(attrs={"type": "date"}))
 

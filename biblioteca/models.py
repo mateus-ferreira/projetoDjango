@@ -19,7 +19,7 @@ class Aluno(models.Model):
 		('7 Ano', '7 Ano'), ('8 Ano', '8 Ano'), ('9 Ano', '9 Ano')), max_length=15,default='Pré II')
 
 class Emprestimo(models.Model):
-	livro = models.ForeignKey(Livro, on_delete=models.PROTECT)
-	aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
-	dataEmprestimo = models.DateField()
-	dataDevolucao = models.DateField()
+	livro = models.CharField(max_length=20)
+	aluno = models.CharField(max_length=20)
+	dataEmprestimo = models.DateField(blank=True)
+	dataDevolucao = models.DateField(blank=True)

@@ -33,8 +33,10 @@ def cadastrarEmprestimo(request):
 
 	if request.method == 'POST':
 		cadastro = EmprestimoForm(request.POST)
+		
 		if cadastro.is_valid():
 			cadastroSalvar = cadastro.save(commit=False)
+			print(cadastroSalvar.livro)
 			cadastroSalvar.save()
 			return redirect('biblioteca:index')
 	empForm = EmprestimoForm()
@@ -51,4 +53,22 @@ def exibirLivros(request):
 
 def exibirEmprestimos(request):
 	emprestimos = Emprestimo.objects.all()
-	return render(request, 'biblioteca/exibirEmprestimos.html', {'emprestimos':emprestimos})	
+	class emps:
+		def __init__(self, aluno, livro, emprestimo):
+
+			self.aluno = aluno
+			self.livro = livro
+			self.emprestimo = emprestimo
+
+	empLivros = []
+
+	for emp in emprestimos:
+		aluno = Aluno.objects.get(matricula=emp.aluno)
+		livro = Livro.objects.get(codigo=emp.livro)
+		emprestimo = emp
+
+		empGeral = emps(aluno, livro, emprestimo)
+		empLivros.append(empGeral)
+		
+	print(empLivros)
+	return render(request, 'biblioteca/exibirEmprestimos.html', {'emprestimos':empLivros})	
