@@ -1,0 +1,21 @@
+{% extends 'biblioteca/base.html' %}
+{% block content %}
+<table class="table table-striped table-dark">
+		<thead>
+			<tr>
+				<th>Título do Livro</th>
+				<th>Nome do Aluno</th>
+				<th>Data de Devolução</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for emprestimo in emprestimos %}
+			<tr>
+				<td>{{ emprestimo.livro.titulo }}</td>
+				<td>{{ emprestimo.aluno.nome }}</td>
+				<td>{{ emprestimo.dtDevolucao }}</td>
+			</tr>
+			{% endfor %}		
+		</tbody>
+	</table>
+{% endblock %}

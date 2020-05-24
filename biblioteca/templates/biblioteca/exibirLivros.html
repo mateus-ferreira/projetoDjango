@@ -1,0 +1,22 @@
+{% extends 'biblioteca/base.html' %}
+
+{% block content %}
+<table class="table table-striped table-dark">
+		<thead>
+			<tr>
+				<th>Título</th>
+				<th>Autor</th>
+				<th>Código</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for livro in livros %}
+			<tr>
+				<td>{{ livro.titulo }}</td>
+				<td>{{ livro.autor }}</td>
+				<td>{{ livro.codigo }}</td>
+			</tr>
+			{% endfor %}		
+		</tbody>
+	</table>
+{% endblock %}
