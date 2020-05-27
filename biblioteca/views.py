@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import Aluno, Livro, Emprestimo
+
 from .forms import AlunoForm, LivroForm, EmprestimoForm
 
 def index(request):
@@ -70,5 +71,4 @@ def exibirEmprestimos(request):
 		empGeral = emps(aluno, livro, emprestimo)
 		empLivros.append(empGeral)
 		
-	print(empLivros)
-	return render(request, 'biblioteca/exibirEmprestimos.html', {'emprestimos':empLivros})	
+	return render(request, 'biblioteca/exibirEmprestimos.html', {'emprestimos':empLivros})

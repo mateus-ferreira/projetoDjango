@@ -34,10 +34,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'biblioteca',
+    'biblioteca.apps.BibliotecaConfig',
     'crispy_forms',
-    'blog'
+    'blog.apps.BlogConfig',
+    'users.apps.UsersConfig'
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,3 +127,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

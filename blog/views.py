@@ -4,35 +4,36 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
+
 def post_list(request):
 	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date') 
 	return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    post.views += 1
-    post.save()
+	post = get_object_or_404(Post, pk=pk)
+	post.views += 1
+	post.save()
 
-    like = PostLike.objects.filter(post_id=pk, user=request.user).count()
+	like = PostLike.objects.filter(post_id=pk, user=request.user).count()
 
-    if like > 0:
-    	liked = True
-    else:
-    	liked = False
+	if like > 0:
+		liked = True
+	else:
+		liked = False
 
-    dislike = PostDislike.objects.filter(post_id=pk, user=request.user).count()
+	dislike = PostDislike.objects.filter(post_id=pk, user=request.user).count()
 
-    if dislike > 0:
-    	disliked = True
-    else:
-    	disliked = False
+	if dislike > 0:
+		disliked = True
+	else:
+		disliked = False
 
-    likes_percent = post.likes_count() / post.views * 100
-    dislikes_percent = post.dislikes_count() / post.views * 100
+	likes_percent = post.likes_count() / post.views * 100
+	dislikes_percent = post.dislikes_count() / post.views * 100
  
-    return render(request, 'blog/post_detail.html', {'post': post, 
-    	'liked': liked, 'disliked': disliked, 
-    	'likes_percent': likes_percent, 'dislikes_percent': dislikes_percent})
+	return render(request, 'blog/post_detail.html', {'post': post, 
+		'liked': liked, 'disliked': disliked, 
+		'likes_percent': likes_percent, 'dislikes_percent': dislikes_percent})
 
 @login_required
 def post_new(request):
