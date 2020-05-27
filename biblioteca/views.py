@@ -2,12 +2,13 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import Aluno, Livro, Emprestimo
-
 from .forms import AlunoForm, LivroForm, EmprestimoForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'biblioteca/index.html', {})
 
+@login_required
 def cadastrarAluno(request):
 	if request.method == "POST":
 		aluno = AlunoForm(request.POST)
@@ -18,6 +19,7 @@ def cadastrarAluno(request):
 	formAluno = AlunoForm()
 	return render(request, 'biblioteca/cadastrarAluno.html', {'form':formAluno})
 
+@login_required
 def cadastrarLivro(request):
 	if request.method == 'POST':
 		livro = LivroForm(request.POST)
@@ -29,19 +31,22 @@ def cadastrarLivro(request):
 	return render(request, 'biblioteca/cadastrarLivro.html', {'form':formLivro})
 
 def cadastrarEmprestimo(request):
-	livros = Livro.objects.all()
-	alunos = Aluno.objects.all()
+	if request.user.is_authenticated:
+		livros = Livro.objects.all()
+		alunos = Aluno.objects.all()
 
-	if request.method == 'POST':
-		cadastro = EmprestimoForm(request.POST)
-		
-		if cadastro.is_valid():
-			cadastroSalvar = cadastro.save(commit=False)
-			print(cadastroSalvar.livro)
-			cadastroSalvar.save()
-			return redirect('biblioteca:index')
-	empForm = EmprestimoForm()
-	return render(request, 'biblioteca/cadastrarEmprestimo.html', {'form':empForm, 'livros':livros, 'alunos':alunos})	
+		if request.method == 'POST':
+			cadastro = EmprestimoForm(request.POST)
+			
+			if cadastro.is_valid():
+				cadastroSalvar = cadastro.save(commit=False)
+				print(cadastroSalvar.livro)
+				cadastroSalvar.save()
+				return redirect('biblioteca:index')
+		empForm = EmprestimoForm()
+		return render(request, 'biblioteca/cadastrarEmprestimo.html', {'form':empForm, 'livros':livros, 'alunos':alunos})
+	else:
+		return redirect('login')
 
 def exibirAlunos(request):
 	alunos = Aluno.objects.all()

@@ -4,7 +4,6 @@ from django.utils import timezone
 
 
 class Livro(models.Model):
-	usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 	titulo = models.CharField(max_length=200)
 	autor = models.CharField(max_length=200)
 	quantidade = models.IntegerField(default='1')

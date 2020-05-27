@@ -1,8 +1,9 @@
 {% extends "biblioteca/base.html" %}
 
 {% block content %}
+	</br>
     <form method="post">
         {% csrf_token %}    
         {{form.as_p}}    
-    <input type="submit" value="Login"></form>
+    <input class="btn btn-primary" type="submit" value="Login"></form>
 {% endblock %}
