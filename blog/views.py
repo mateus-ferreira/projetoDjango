@@ -102,20 +102,20 @@ def add_comment_to_post(request, pk):
 def comment_approve(request, pk):
 	comment = get_object_or_404(Comment, pk=pk)
 	comment.approve()
-	return redirect('post_detail', pk=comment.post.pk)
+	return redirect('blog:post_detail', pk=comment.post.pk)
 
 @login_required
 def comment_remove(request, pk):
 	comment = get_object_or_404(Comment, pk=pk)
 	comment.delete()
-	return redirect('post_detail', pk=comment.post.pk)
+	return redirect('blog:post_detail', pk=comment.post.pk)
 
 @login_required
 def post_like(request, pk):
 	post_like, created = PostLike.objects.get_or_create(post_id=pk, user=request.user)
-	return redirect('post_detail', pk=pk)
+	return redirect('blog:post_detail', pk=pk)
 
 @login_required
 def post_dislike(request, pk):
 	post_dislike, created = PostDislike.objects.get_or_create(post_id=pk, user=request.user)
-	return redirect('post_detail', pk=pk)
+	return redirect('blog:post_detail', pk=pk)
