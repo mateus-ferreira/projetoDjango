@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def post_list(request):
-	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date') 
+	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 	return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
@@ -30,9 +30,9 @@ def post_detail(request, pk):
 
 	likes_percent = post.likes_count() / post.views * 100
 	dislikes_percent = post.dislikes_count() / post.views * 100
- 
-	return render(request, 'blog/post_detail.html', {'post': post, 
-		'liked': liked, 'disliked': disliked, 
+
+	return render(request, 'blog/post_detail.html', {'post': post,
+		'liked': liked, 'disliked': disliked,
 		'likes_percent': likes_percent, 'dislikes_percent': dislikes_percent})
 
 @login_required

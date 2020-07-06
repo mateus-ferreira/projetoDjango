@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from django.shortcuts import render, redirect
-from django.utils import timezone
 from .models import Aluno, Livro, Emprestimo
 from .forms import AlunoForm, LivroForm, EmprestimoForm
 from django.contrib.auth.decorators import login_required
@@ -37,7 +35,7 @@ def cadastrarEmprestimo(request):
 
 		if request.method == 'POST':
 			cadastro = EmprestimoForm(request.POST)
-			
+
 			if cadastro.is_valid():
 				cadastroSalvar = cadastro.save(commit=False)
 				print(cadastroSalvar.livro)
@@ -75,5 +73,5 @@ def exibirEmprestimos(request):
 
 		empGeral = emps(aluno, livro, emprestimo)
 		empLivros.append(empGeral)
-		
+
 	return render(request, 'biblioteca/exibirEmprestimos.html', {'emprestimos':empLivros})
