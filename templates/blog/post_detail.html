@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	<div class="post">
+		{% if post.published_date %}
+			<div class="date">
+				{{ post.published_date }}
+			</div>
+		{% else %}
+			<a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+		{% endif %}
+		{% if user.is_authenticated %}
+			<a href="{% url 'blog:post_edit' pk=post.pk %}"><span class="material-icons icones d-inline-block">edit</span></a>
+			<a href="{% url 'blog:post_remove' pk=post.pk %}"><span class="material-icons icones ml-3 d-inline-block">delete</span></a>
+		{% endif %}
+		<h2>{{ post.title }}</h2>
+		<p>{{ post.text|linebreaksbr }}</p>
+		<div>
+			<div class="like_icon">
+				{% if liked %}
+				<a href="{% url 'blog:post_like' pk=post.pk %}"><span class="material-icons tup d-inline-block">thumb_up</span></a>
+				{% else %}
+				<a href="{% url 'blog:post_like' pk=post.pk %}"><span class="material-icons thumbs d-inline-block">thumb_up</span></a>
+				{% endif %}
+				{{ post.likes_count }} ----- 
+				{{ likes_percent|floatformat:2 }}% aprovação
+			</div>
+			<div class="like_icon">
+				{% if disliked %}
+				<a href="{% url 'blog:post_dislike' pk=post.pk %}"><span class="material-icons tdown d-inline-block">thumb_down</span></a>
+				{% else %}
+				<a href="{% url 'blog:post_dislike' pk=post.pk %}"><span class="material-icons thumbs d-inline-block">thumb_down</span></a>
+				{% endif %}
+				{{ post.dislikes_count }} ----- 
+				{{ dislikes_percent|floatformat:2 }}% desaprovação
+			</div>
+		</div>
+		<div class="date">
+			{{ post.views }} Views
+		</div>	
+	</div>
+	<hr>
+	<a href="{% url 'blog:add_comment_to_post' pk=post.pk %}"><span class="material-icons d-block">add_comment</span></a>
+	{% for comment in post.comments.all %}
+	    {% if user.is_authenticated or comment.approved_comment %}
+		<div class="comment">
+			<div class="date">
+				{{ comment.created_date }}
+				{% if not comment.approved_comment %}
+					<a href="{% url 'blog:comment_remove' pk=comment.pk %}"><span class="material-icons ml-3 d-inline-block">delete</span></a>
+					<a href="{% url 'blog:comment_approve' pk=comment.pk %}"><span class="material-icons ml-3 d-inline-block">done</span></a>
+				{% endif %}
+			</div>
+			<strong>{{ comment.author }}</strong>
+			<p>{{ comment.text|linebreaks }}</p>
+		</div>
+		{% endif %}
+	{% empty %}
+		<p>No comments here yet :(</p>
+	{% endfor %}
+{% endblock %}

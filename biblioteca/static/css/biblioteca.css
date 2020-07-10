@@ -1,3 +1,25 @@
 .usuario {
 	color: white;
 }
+
+.icones {
+	font-size: 36px;
+	
+}
+
+a:hover {
+	text-decoration: none;
+
+}
+
+.thumbs {
+	color:black;
+}
+
+.tdown {
+	color:red;
+}
+
+.tup {
+	color:green;
+}

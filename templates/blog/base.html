@@ -1,0 +1,77 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="{% static 'css/biblioteca.css' %}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta charset="utf-8">
+	<title>Blog</title>
+</head>
+<header>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="btn btn-outline-primary" href="{% url 'blog:post_list' %}">Django Girls Blog</a>
+		<a class="btn btn-outline-success ml-3" href="/">Biblioteca Online</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="nav justify-content-center mx-5">
+		{% if user.is_authenticated %}
+			<a href="{% url 'blog:post_new' %}"><span class="material-icons icones d-block">add_circle_outline</span></a>
+			<a href="{% url 'blog:post_draft_list' %}" class="top-menu"><span class="glyphicon glyphicon-edit"></span></a>
+		{% endif %}
+		
+	</div>
+	<div class="ml-auto">
+		{% if user.is_authenticated %}
+			<div class="usuario">
+			Olá {{ user.username }}
+			<a class="btn btn-outline-danger ml-3" href="{% url 'logout' %}">Logout</a>
+			</div>
+		{% else %}
+		<div class="btn-group">
+  			<button type="button" class="btn btn-outline-primary dropdown-toggle ml-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acessar</button>
+				<div>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li>
+							<form action="{% url 'login' %}" class="px-4 py-3" method="post">
+								{% csrf_token %}
+								<div class="form-group">
+									<label for="exampleDropdownFormEmail1">Nome de usuário</label>
+									<input type="text" name="username" class="form-control" id="id_username" placeholder="Usuario" required="required">
+								</div>
+								<div class="form-group">
+									<label for="exampleDropdownFormPassword1">Senha</label>
+									<input type="password" name="password" class="form-control" id="id_password" placeholder="Senha" required="required">
+								</div>
+								<input id="login-submit" name="login-submit" type="submit" class="btn btn-primary" value="Entrar">
+							</form>
+							<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'users:signup' %}">Primeira vez aqui? Cadastre-se</a>
+								<a class="dropdown-item" href="{% url 'password_reset' %}">Esqueceu a senha?</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+</header>
+<body>
+	<div class="page-header">
+		
+	</div>
+	<div class="content container">
+		<div class="row">
+			<div class="col-md-8">
+			{% block content %}
+			{% endblock %}
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -8,11 +8,11 @@ class Livro(models.Model):
 	autor = models.CharField(max_length=200)
 	quantidade = models.IntegerField(default='1')
 	idioma = models.CharField(choices=(('Português', 'Português'), ('Inglês', 'Inglês'), ('Espanhol', 'Espanhol'), ('Outro', 'Outro')), max_length=15,default='Português')
-	codigo = models.CharField(max_length=20)
+	codigo = models.CharField(max_length=20, unique=True)
 
 class Aluno(models.Model):
 	nome = models.CharField(max_length=200)
-	matricula = models.CharField(max_length=20)
+	matricula = models.CharField(max_length=20, unique=True)
 	serie = models.CharField(choices=(('Pré II', 'Pré II'), ('1 Ano', '1 Ano'), ('2 Ano', '2 Ano'), 
 		('3 Ano', '3 Ano'), ('4 Ano', '4 Ano'), ('5 Ano', '5 Ano'), ('6 Ano', '6 Ano'), 
 		('7 Ano', '7 Ano'), ('8 Ano', '8 Ano'), ('9 Ano', '9 Ano')), max_length=15,default='Pré II')
