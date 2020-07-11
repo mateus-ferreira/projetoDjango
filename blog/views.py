@@ -28,11 +28,6 @@ def post_detail(request, pk):
 	else:
 		disliked = False
 
-	if liked == True:
-		disliked = False
-	elif disliked == True:
-		liked = False
-
 	likes_percent = post.likes_count() / post.views * 100
 	dislikes_percent = post.dislikes_count() / post.views * 100
 
