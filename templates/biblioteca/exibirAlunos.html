@@ -4,15 +4,22 @@
 <table class="table table-striped table-dark">
 		<thead>
 			<tr>
+				<th class="tabela"></th>
 				<th>Nome</th>
 				<th>Série</th>
+				<th>Matrícula</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for aluno in alunos %}
 			<tr>
+				<td>
+				<a href="{% url 'biblioteca:editarAluno' pk=aluno.pk %}"><span class="material-icons d-inline-block">edit</span></a>
+				<a href="{% url 'biblioteca:removerAluno' pk=aluno.pk %}"><span class="material-icons ml-1 d-inline-block">delete</span></a>
+				</td>
 				<td>{{ aluno.nome }}</td>
 				<td>{{ aluno.serie }}</td>
+				<td>{{ aluno.matricula }}</td>
 			</tr>
 			{% endfor %}		
 		</tbody>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Aluno, Livro, Emprestimo
 from .forms import AlunoForm, LivroForm, EmprestimoForm
 from django.contrib.auth.decorators import login_required
@@ -28,6 +28,7 @@ def cadastrarLivro(request):
 	formLivro = LivroForm()
 	return render(request, 'biblioteca/cadastrarLivro.html', {'form':formLivro})
 
+@login_required
 def cadastrarEmprestimo(request):
 	if request.user.is_authenticated:
 		livros = Livro.objects.all()
@@ -75,3 +76,22 @@ def exibirEmprestimos(request):
 		empLivros.append(empGeral)
 
 	return render(request, 'biblioteca/exibirEmprestimos.html', {'emprestimos':empLivros})
+
+@login_required
+def editarAluno(request, pk):
+	alunoEdit = get_object_or_404(Aluno, pk=pk)
+	if request.method == "POST":
+		form = AlunoForm(request.POST, instance=alunoEdit)
+		if form.is_valid():
+			alunoEdit = form.save(commit=False)
+			alunoEdit.save()
+			return redirect('biblioteca:exibirAlunos')
+	else:
+		form = AlunoForm(instance=alunoEdit)
+	return render(request, 'biblioteca/editarAluno.html', {'form':form})
+
+@login_required
+def removerAluno(request, pk):
+	aluno = get_object_or_404(Aluno, pk=pk)
+	aluno.delete()
+	return redirect('biblioteca:exibirAlunos')

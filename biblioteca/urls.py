@@ -11,4 +11,6 @@ urlpatterns = [
 	path('exibirAlunos', views.exibirAlunos, name='exibirAlunos'),
 	path('exibirLivros', views.exibirLivros, name='exibirLivros'),
 	path('exibirEmprestimos', views.exibirEmprestimos, name='exibirEmprestimos'),
+	path('aluno/<int:pk>/edit/', views.editarAluno, name='editarAluno'),
+	path('aluno/<pk>/remove/', views.removerAluno, name='removerAluno'),
 ]

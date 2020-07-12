@@ -1,0 +1,12 @@
+{% extends 'biblioteca/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+	<form method="POST" class="post-form">
+		<h2>Novo Cadastro</h2>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="btn btn-outline-success">Salvar</button>
+	</form>
+</div>
+{% endblock %}
