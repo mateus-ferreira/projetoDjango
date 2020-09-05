@@ -32,15 +32,16 @@ class LivroForm(forms.ModelForm):
 		self.helper.add_input(Submit('submit', 'Salvar'))
 
 class EmprestimoForm(forms.ModelForm):
-	livro = forms.ChoiceField(choices=[(livro.codigo, livro.titulo) for livro in Livro.objects.all()])
-	aluno = forms.ChoiceField(choices=[(aluno.matricula, aluno.nome) for aluno in Aluno.objects.all()])
+	livros = forms.ChoiceField(choices=[(livro.codigo, livro.titulo) for livro in Livro.objects.all()])
+	alunos = forms.ChoiceField(choices=[(aluno.matricula, aluno.nome) for aluno in Aluno.objects.all()])
 	dataEmprestimo = forms.CharField(widget=forms.widgets.DateTimeInput(attrs={"type": "date"}))
 	dataDevolucao = forms.CharField(widget=forms.widgets.DateTimeInput(attrs={"type": "date"}))
 
 	class Meta:
 
 		model = Emprestimo
-		fields = ('livro', 'aluno', 'dataEmprestimo', 'dataDevolucao')
+		fields = ('dataEmprestimo', 'dataDevolucao')
+		exclude = ('livro', 'aluno', )
 
 	def __init__(self, *args, **kwargs):
 		super(EmprestimoForm, self).__init__(*args, **kwargs)

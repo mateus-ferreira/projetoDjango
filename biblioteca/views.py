@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Aluno, Livro, Emprestimo
 from .forms import AlunoForm, LivroForm, EmprestimoForm
 from django.contrib.auth.decorators import login_required
+from pprint import pprint
 
 def index(request):
     return render(request, 'biblioteca/index.html', {})
@@ -36,10 +37,12 @@ def cadastrarEmprestimo(request):
 
 		if request.method == 'POST':
 			cadastro = EmprestimoForm(request.POST)
-
+			
 			if cadastro.is_valid():
+				print(dict(cadastro.fields['livros'].choices)[cadastro.cleaned_data['livros']])
 				cadastroSalvar = cadastro.save(commit=False)
-				print(cadastroSalvar.livro)
+				cadastroSalvar.livro = Livro.objects.get(titulo=dict(cadastro.fields['livros'].choices)[cadastro.cleaned_data['livros']])
+				cadastroSalvar.aluno = Aluno.objects.get(nome=dict(cadastro.fields['alunos'].choices)[cadastro.cleaned_data['alunos']])
 				cadastroSalvar.save()
 				return redirect('biblioteca:index')
 		empForm = EmprestimoForm()
@@ -68,8 +71,8 @@ def exibirEmprestimos(request):
 	empLivros = []
 
 	for emp in emprestimos:
-		aluno = Aluno.objects.get(matricula=emp.aluno)
-		livro = Livro.objects.get(codigo=emp.livro)
+		aluno = Aluno.objects.get(matricula=emp.aluno.matricula)
+		livro = Livro.objects.get(codigo=emp.livro.codigo)
 		emprestimo = emp
 
 		empGeral = emps(aluno, livro, emprestimo)
