@@ -1,1 +1,18 @@
 {% extends 'biblioteca/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-center">
+	<div>
+		<div>
+			Total de livros cadastrados: {{ nlivros }}
+		</div>
+			{{ linebreaker }}
+		<div>
+			Total de alunos cadastrados: {{ nalunos }}
+		</div>
+			{{ linebreaker }}
+		<div>
+			Total de emprestimos cadastrados: {{ nemprestimos }}
+		</div>	
+	</div>
+</div>
+{% endblock %}

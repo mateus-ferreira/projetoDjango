@@ -2,10 +2,14 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Aluno, Livro, Emprestimo
 from .forms import AlunoForm, LivroForm, EmprestimoForm
 from django.contrib.auth.decorators import login_required
-from pprint import pprint
+from datetime import datetime
+from datetime import date
 
 def index(request):
-    return render(request, 'biblioteca/index.html', {})
+	nLivros = Livro.objects.count()
+	nAlunos = Aluno.objects.count()
+	nEmprestimos = Emprestimo.objects.count()
+	return render(request, 'biblioteca/index.html', {'nlivros':nLivros, 'nalunos':nAlunos, 'nemprestimos':nEmprestimos})
 
 @login_required
 def cadastrarAluno(request):
@@ -21,7 +25,7 @@ def cadastrarAluno(request):
 @login_required
 def cadastrarLivro(request):
 	if request.method == 'POST':
-		livro = LivroForm(request.POST)
+		livro = LivroForm(request.POST) 
 		if livro.is_valid():
 			livroSalvar = livro.save(commit=False)
 			livroSalvar.save()
@@ -39,7 +43,6 @@ def cadastrarEmprestimo(request):
 			cadastro = EmprestimoForm(request.POST)
 			
 			if cadastro.is_valid():
-				print(dict(cadastro.fields['livros'].choices)[cadastro.cleaned_data['livros']])
 				cadastroSalvar = cadastro.save(commit=False)
 				cadastroSalvar.livro = Livro.objects.get(titulo=dict(cadastro.fields['livros'].choices)[cadastro.cleaned_data['livros']])
 				cadastroSalvar.aluno = Aluno.objects.get(nome=dict(cadastro.fields['alunos'].choices)[cadastro.cleaned_data['alunos']])
@@ -70,10 +73,22 @@ def exibirEmprestimos(request):
 
 	empLivros = []
 
+
+	hoje = date.today()
+	multa = hoje.strftime('%Y-%m-%d')
+
 	for emp in emprestimos:
 		aluno = Aluno.objects.get(matricula=emp.aluno.matricula)
 		livro = Livro.objects.get(codigo=emp.livro.codigo)
 		emprestimo = emp
+
+		mes = str(emprestimo.dataDevolucao)
+		
+
+		if multa < mes:
+			emprestimo.vencimento = False
+		else:
+			emprestimo.vencimento = True
 
 		empGeral = emps(aluno, livro, emprestimo)
 		empLivros.append(empGeral)

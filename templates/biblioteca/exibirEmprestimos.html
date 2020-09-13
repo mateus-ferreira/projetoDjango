@@ -3,6 +3,7 @@
 <table class="table table-striped table-dark">
 		<thead>
 			<tr>
+				<th></th>
 				<th>Título do Livro</th>
 				<th>Nome do Aluno</th>
 				<th>Data de Devolução</th>
@@ -11,6 +12,11 @@
 		<tbody>
 			{% for emprestimo in emprestimos %}
 			<tr>
+				{% if emprestimo.emprestimo.vencimento == True %}
+				<td><span class="material-icons text-danger">priority_high</span></td>
+				{% else %}
+				<td><span class="material-icons text-success">check</span></td>
+				{% endif %}
 				<td>{{ emprestimo.livro.titulo }}</td>
 				<td>{{ emprestimo.aluno.nome }}</td>
 				<td>{{ emprestimo.emprestimo.dataDevolucao }}</td>
